@@ -42,7 +42,7 @@ app.get('/talk_anu', async (req, res) => {
                 { role: "system", content: "You are a helpful assistant. Your name is ANU, which stands for Assistant & Nurturing Unit." },
                 { role: "user", content: req.query.question || "Who are you " },
             ],
-            max_tokens: 300,
+            max_tokens: 500,
         });
 
         console.log(chatCompletion);
