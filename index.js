@@ -20,20 +20,23 @@ app.get("/", async (req, res) => {
 })
 
 app.get('/talk_anu', async (req, res) => {
-    const chatCompletion = await openai.chat.completions.create({
-        // model: "gpt-4o-mini",
-        model: "gpt-3.5-turbo", 
-        messages: [
-            { role: "system", content: "You are a helpful assistant. Your name is ANU, which stands for Assitant & Nurturing Unit" },
-            {
-                role: "user",
-                content: "What is Prime Number.",
-            },
-        ],
-        max_tokens: 300,
-    });
-    console.log(chatCompletion)
-    res.send(chatCompletion.choices[0].message || "failed to response from server");
+    try {
+        const chatCompletion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                { role: "system", content: "You are a helpful assistant. Your name is ANU, which stands for Assistant & Nurturing Unit." },
+                { role: "user", content: req.query.question || "Who are you " },
+            ],
+            max_tokens: 300,
+        });
+
+        console.log(chatCompletion);
+        const responseMessage = chatCompletion.choices?.[0]?.message?.content || "No response from server.";
+        res.json({ success: true, response: responseMessage });
+    } catch (error) {
+        console.error("Error communicating with OpenAI:", error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
 app.listen(port, () => {
