@@ -13,7 +13,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 
 if (FRONTEND_URL === "" || OPENAI_API_KEY === "") {
     console.log("env not found")
-    return
+    
 }
 
 const openai = new OpenAI({
