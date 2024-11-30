@@ -1,17 +1,32 @@
 import express from "express"
-import { config } from "dotenv";
 import OpenAI from "openai"
+import cors from "cors";
+import { config } from "dotenv";
 
 config()
 const app = express();
 const port = process.env.PORT || 8000;
 
+const FRONTEND_URL = process.env.FRONTEND_URL
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+
+
+if (FRONTEND_URL === "" || OPENAI_API_KEY === "") {
+    console.log("env not found")
+    return
+}
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: OPENAI_API_KEY,
 });
 
 
+let corsOptions = {
+    origin: [`${FRONTEND_URL}`],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+}
+
+app.use(cors(corsOptions))
 
 app.get("/", async (req, res) => {
     res.send({

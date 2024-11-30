@@ -6,7 +6,8 @@
 - openai
 - dotenv
 
-## 
+## Error
+- CORS error
 - 
 
 
