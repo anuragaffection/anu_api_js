@@ -33,7 +33,7 @@ app.get('/talk_anu', async (req, res) => {
         max_tokens: 300,
     });
     console.log(chatCompletion)
-    res.send(chatCompletion.choices[0].message);
+    res.send(chatCompletion.choices[0].message || "failed to response from server");
 });
 
 app.listen(port, () => {
