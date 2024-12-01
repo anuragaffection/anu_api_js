@@ -27,6 +27,14 @@ let corsOptions = {
 }
 
 app.use(cors(corsOptions))
+app.use((req, res, next) => {
+    const origin = req.headers.origin || req.headers.referer;
+    if (!origin || origin !== FRONTEND_URL) {
+        return res.status(403).json({ success: false, message: "Unauthorized origin" });
+    }
+    next();
+});
+
 
 app.get("/", async (req, res) => {
     res.send({
@@ -42,7 +50,7 @@ app.get('/talk_anu', async (req, res) => {
                 { role: "system", content: "You are a helpful assistant. Your name is ANU, which stands for Assistant & Nurturing Unit." },
                 { role: "user", content: req.query.question || "Who are you " },
             ],
-            max_tokens: 500,
+            max_tokens: 400,
         });
 
         console.log(chatCompletion);
